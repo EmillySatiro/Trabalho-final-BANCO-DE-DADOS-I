@@ -1,27 +1,29 @@
 -- 1. Consulta sobre planetas e suas características geológicas
-
 -- Mostrar o Nome dos planetas, Distancia e Características Geológicas
-SELECT p.Nome, p.Distancia, c.CaracteristicasGeologicas
+SELECT c.Nome AS Nome_Planeta, p.Distância, p.Características_Geológicas
 FROM TBL_PLANETAS p
-INNER JOIN TBL_CARACTERISTICAS_GEOLOGICAS c ON p.ID_CorpoCeleste = c.ID_CorpoCeleste;
+JOIN TBL_CORPO_CELESTE c ON p.ID_CorpoCeleste = c.ID_CorpoCeleste;
 
--- 2. Consulta sobre cometas e missões não tripuladas associadas
--- Mostrar o Nome dos cometas, Orbita e Nome das missões não tripuladas associadas
-SELECT c.Nome, c.Orbita, m.NomeMissao
+-- 2. Consulta sobre cometas e missões  associadas
+-- Mostrar o ID dos cometas, das missões associadas
+--erro 
+SELECT c.ID_CorpoCeleste AS ID_Cometa, m.ID_Sonda AS ID_Missao
 FROM TBL_COMETAS c
-INNER JOIN TBL_MISSOES_NAO_TRIPULADAS m ON c.ID_CorpoCeleste = m.ID_CorpoCeleste;
+JOIN TBL_MISSOES_NÃO_TRIPULADAS m ON c.ID_CorpoCeleste = m.ID_CorpoCeleste;
+
 
 -- 3. Consulta sobre estrelas e as missões associadas
 -- Mostrar o Nome das estrelas, Sistema e Nome das missões não tripuladas associadas
-SELECT e.Nome, e.Sistema, m.NomeMissao
+SELECT ce.Nome AS Nome_Estrela, e.Sistema, m.NomeMissão
 FROM TBL_ESTRELAS e
-INNER JOIN TBL_MISSOES_NAO_TRIPULADAS m ON e.ID_CorpoCeleste = m.ID_CorpoCeleste;
+JOIN TBL_CORPO_CELESTE ce ON e.ID_CorpoCeleste = ce.ID_CorpoCeleste
+LEFT JOIN TBL_MISSOES_NÃO_TRIPULADAS m ON e.ID_CorpoCeleste = m.ID_CorpoCeleste; -- ta ficando null pq ta com um erro no banco 
 
--- 4. Consulta sobre galáxias e seu histórico
--- Mostrar o Nome das galáxias e o ID do histórico associado
-SELECT g.Nome, h.ID_Historico
-FROM TBL_GALAXIAS g
-INNER JOIN TBL_HISTORICO_GALAXIAS h ON g.ID_Galaxia = h.ID_Galaxia;
+-- 4. Quantidade de missões tripuladas em cada galaxia 
+SELECT g.Nome AS Nome_Galáxia, COUNT(m.NomeMissão) AS Quantidade_Missoes
+FROM TBL_GALÁXIAS g
+LEFT JOIN TBL_MISSOES_GALAXIAS m ON g.ID_Galáxia = m.ID_Galáxia
+GROUP BY g.ID_Galáxia, g.Nome;
 
 -- 5. Consulta sobre funcionários, setores e tipos de funcionários
 -- Mostrar o ID dos funcionários, Status e Tipo de Funcionário
