@@ -1,249 +1,150 @@
--- Active: 1720829133941@@127.0.0.1@3306@kk
-CREATE DATABASE interstellarinsight 
-DEFAULT CHARACTER SET utf8
-DEFAULT COLLATE utf8_general_ci;
-USE interstellarinsight;
+CREATE [TEMPORARY] TABLE [IF NOT EXISTS] tbl_name
+    { LIKE old_tbl_name | (LIKE old_tbl_name) }
 
-create table TBL_CORPO_CELESTE(
-ID_CorpoCeleste int primary key, 
-nome varchar(100)
-);
-DESCRIBE TBL_CORPO_CELESTE;
+# create_definition:
+    col_name column_definition
+  | [CONSTRAINT [symbol]] PRIMARY KEY [index_type] (index_col_name,...)
+      [index_option] ...
+  | {INDEX|KEY} [index_name] [index_type] (index_col_name,...)
+      [index_option] ...
+  | [CONSTRAINT [symbol]] UNIQUE [INDEX|KEY]
+      [index_name] [index_type] (index_col_name,...)
+      [index_option] ...
+  | {FULLTEXT|SPATIAL} [INDEX|KEY] [index_name] (index_col_name,...)
+      [index_option] ...
+  | [CONSTRAINT [symbol]] FOREIGN KEY
+      [index_name] (index_col_name,...) reference_definition
+  | CHECK (expr)
 
-create table TBL_PLANETAS(
-ID_CorpoCeleste int primary key,
-Distancia varchar(100),
-Tamanho varchar(100), 
-Composicao varchar(100),
-atmosfera varchar(100),
-foreign key(ID_CorpoCeleste) references TBL_CORPO_CELESTE(ID_CorpoCeleste)
-);
-DESCRIBE TBL_PLANETAS;
+# column_definition:
+    data_type [NOT NULL | NULL] [DEFAULT default_value]
+      [AUTO_INCREMENT] [UNIQUE [KEY] | [PRIMARY] KEY]
+      [COMMENT 'string']
+      [COLUMN_FORMAT {FIXED|DYNAMIC|DEFAULT}]
+      [reference_definition]
 
-CREATE TABLE TBL_CARACTERISTICAS_GEOLOGICAS (
-    ID_CorpoCeleste INT PRIMARY KEY,
-    CaracteristicasGeologicas TEXT,
-    FOREIGN KEY (ID_CorpoCeleste) REFERENCES TBL_CORPO_CELESTE(ID_CorpoCeleste)
-);
-DESCRIBE TBL_CARACTERISTICAS_GEOLOGICAS;
+# data_type:
+    BIT[(length)]
+  | TINYINT[(length)] [UNSIGNED] [ZEROFILL]
+  | SMALLINT[(length)] [UNSIGNED] [ZEROFILL]
+  | MEDIUMINT[(length)] [UNSIGNED] [ZEROFILL]
+  | INT[(length)] [UNSIGNED] [ZEROFILL]
+  | INTEGER[(length)] [UNSIGNED] [ZEROFILL]
+  | BIGINT[(length)] [UNSIGNED] [ZEROFILL]
+  | REAL[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  | DOUBLE[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  | FLOAT[(length,decimals)] [UNSIGNED] [ZEROFILL]
+  | DECIMAL[(length[,decimals])] [UNSIGNED] [ZEROFILL]
+  | NUMERIC[(length[,decimals])] [UNSIGNED] [ZEROFILL]
+  | DATE
+  | TIME
+  | TIMESTAMP
+  | DATETIME
+  | YEAR
+  | CHAR[(length)]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | VARCHAR(length)
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | BINARY[(length)]
+  | VARBINARY(length)
+  | TINYBLOB
+  | BLOB
+  | MEDIUMBLOB
+  | LONGBLOB
+  | TINYTEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | TEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | MEDIUMTEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | LONGTEXT [BINARY]
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | ENUM(value1,value2,value3,...)
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | SET(value1,value2,value3,...)
+      [CHARACTER SET charset_name] [COLLATE collation_name]
+  | spatial_type
 
-CREATE TABLE TBL_COMETAS (
-    ID_CorpoCeleste INT PRIMARY KEY,
-    Orbita VARCHAR(100),
-    TipoDeComa VARCHAR(100),
-    Posicao VARCHAR(100),
-    FOREIGN KEY (ID_CorpoCeleste) REFERENCES TBL_CORPO_CELESTE(ID_CorpoCeleste)
-);
-DESCRIBE TBL_COMETAS;
+# index_col_name:
+    col_name [(length)] [ASC | DESC]
 
-CREATE TABLE TBL_ESTRELAS (
-    EID_CorpoCeleste INT PRIMARY KEY,
-    Distancia FLOAT,
-    Sistema VARCHAR(100),
-    Tamanho FLOAT,
-    Composicao VARCHAR(100)
-);
-DESCRIBE TBL_ESTRELAS;
+# index_type:
+    USING {BTREE | HASH | RTREE}
 
-CREATE TABLE TBL_NEBULOSA(
-    ID_CorpoCeleste INT PRIMARY KEY,
-    Tipo VARCHAR(100),
-    FOREIGN KEY (ID_CorpoCeleste) REFERENCES TBL_CORPO_CELESTE(ID_CorpoCeleste)
-);
-DESCRIBE TBL_NEBULOSA;
+# index_option:
+    KEY_BLOCK_SIZE [=] value
+  | index_type
+  | WITH PARSER parser_name
 
-CREATE TABLE TBL_SONDAS (
-    ID_Sonda INT PRIMARY KEY,
-    Nome VARCHAR(100),
-    Status VARCHAR(50)
-);
-DESCRIBE TBL_SONDAS;
+# reference_definition:
+    REFERENCES tbl_name (index_col_name,...)
+      [MATCH FULL | MATCH PARTIAL | MATCH SIMPLE]
+      [ON DELETE reference_option]
+      [ON UPDATE reference_option]
 
-CREATE TABLE TBL_HISTORICO_SONDAS (
-    ID_Sonda INT,
-    ID_Historico INT,
-    PRIMARY KEY (ID_Sonda, ID_Historico),
-    FOREIGN KEY (ID_Sonda) REFERENCES TBL_SONDAS(ID_Sonda)
-);
-DESCRIBE TBL_HISTORICO_SONDAS;
+# reference_option:
+    RESTRICT | CASCADE | SET NULL | NO ACTION
 
-CREATE TABLE TBL_NAVES (
-    ID_Nave INT PRIMARY KEY,
-    Nome VARCHAR(100),
-    Status VARCHAR(50)
-);
-DESCRIBE TBL_NAVES;
+# table_options:
+    table_option [[,] table_option] ...
 
-CREATE TABLE TBL_HISTORICO_NAVES (
-    ID_Nave INT,
-    ID_Historico INT,
-    PRIMARY KEY (ID_Nave, ID_Historico),
-    FOREIGN KEY (ID_Nave) REFERENCES TBL_NAVES(ID_Nave)
-);
-DESCRIBE TBL_HISTORICO_NAVES;
+# table_option:
+    ENGINE [=] engine_name
+  | AUTO_INCREMENT [=] value
+  | AVG_ROW_LENGTH [=] value
+  | [DEFAULT] CHARACTER SET [=] charset_name
+  | CHECKSUM [=] {0 | 1}
+  | [DEFAULT] COLLATE [=] collation_name
+  | COMMENT [=] 'string'
+  | CONNECTION [=] 'connect_string'
+  | DATA DIRECTORY [=] 'absolute path to directory'
+  | DELAY_KEY_WRITE [=] {0 | 1}
+  | INDEX DIRECTORY [=] 'absolute path to directory'
+  | INSERT_METHOD [=] { NO | FIRST | LAST }
+  | KEY_BLOCK_SIZE [=] value
+  | MAX_ROWS [=] value
+  | MIN_ROWS [=] value
+  | PACK_KEYS [=] {0 | 1 | DEFAULT}
+  | PASSWORD [=] 'string'
+  | ROW_FORMAT [=] {DEFAULT|DYNAMIC|FIXED|COMPRESSED|REDUNDANT|COMPACT}
+  | UNION [=] (tbl_name[,tbl_name]...)
 
-CREATE TABLE TBL_GALAXIAS (
-    ID_Galaxia INT PRIMARY KEY,
-    Nome VARCHAR(100)
-);
-DESCRIBE TBL_GALAXIAS;
+# partition_options:
+    PARTITION BY
+        { [LINEAR] HASH(expr)
+        | [LINEAR] KEY(column_list)
+        | RANGE{(expr) | COLUMNS(column_list)}
+        | LIST{(expr) | COLUMNS(column_list)} }
+    [PARTITIONS num]
+    [SUBPARTITION BY
+        { [LINEAR] HASH(expr)
+        | [LINEAR] KEY(column_list) }
+      [SUBPARTITIONS num]
+    ]
+    [(partition_definition [, partition_definition] ...)]
 
-CREATE TABLE TBL_HISTORICO_GALAXIAS (
-    ID_Galaxia INT,
-    ID_Historico INT,
-    PRIMARY KEY (ID_Galaxia, ID_Historico),
-    FOREIGN KEY (ID_Galaxia) REFERENCES TBL_GALAXIAS(ID_Galaxia)
-);
-DESCRIBE TBL_HISTORICO_GALAXIAS;
+# partition_definition:
+    PARTITION partition_name
+        [VALUES 
+            {LESS THAN {(expr | value_list) | MAXVALUE} 
+            | 
+            IN (value_list | value_list)}]
+        [[STORAGE] ENGINE [=] engine_name]
+        [COMMENT [=] 'comment_text' ]
+        [DATA DIRECTORY [=] 'data_dir']
+        [INDEX DIRECTORY [=] 'index_dir']
+        [MAX_ROWS [=] max_number_of_rows]
+        [MIN_ROWS [=] min_number_of_rows]
+        [(subpartition_definition [, subpartition_definition] ...)]
 
-CREATE TABLE TBL_MISSOES_TRIPULADAS (
-    NomeMissao VARCHAR(100) PRIMARY KEY,
-    DataDeLancamento DATE,
-    DuracaoEstipulada VARCHAR(50),
-    Objetivos TEXT
-);
-DESCRIBE TBL_MISSOES_TRIPULADAS;
+# subpartition_definition:
+    SUBPARTITION logical_name
+        [[STORAGE] ENGINE [=] engine_name]
+        [COMMENT [=] 'comment_text' ]
+        [DATA DIRECTORY [=] 'data_dir']
+        [INDEX DIRECTORY [=] 'index_dir']
+        [MAX_ROWS [=] max_number_of_rows]
+        [MIN_ROWS [=] min_number_of_rows]
 
-CREATE TABLE TBL_NOMEMISSAO_NAVE (
-    NomeMissao VARCHAR(100),
-    ID_Nave INT,
-    PRIMARY KEY (NomeMissao, ID_Nave),
-    FOREIGN KEY (NomeMissao) REFERENCES TBL_MISSOES_TRIPULADAS(NomeMissao),
-    FOREIGN KEY (ID_Nave) REFERENCES TBL_NAVES(ID_Nave)
-);
-DESCRIBE TBL_NOMEMISSAO_NAVE;
-
-CREATE TABLE TBL_MISSOES_NAO_TRIPULADAS (
-    NomeMissao VARCHAR(100) PRIMARY KEY,
-    DataDeLancamento DATE,
-    Duracao VARCHAR(50),
-    Objetivos TEXT
-);
-DESCRIBE TBL_MISSOES_NAO_TRIPULADAS;
-
-CREATE TABLE TBL_ENVOLVIDOS (
-    ID_Sonda INT PRIMARY KEY,
-    NomeSonda VARCHAR(100)
-);
-DESCRIBE TBL_ENVOLVIDOS; 
-
-CREATE TABLE TBL_TRIPULACAO (
-    ID_Tripulacao INT PRIMARY KEY,
-    NomeMissao VARCHAR(100),
-    FOREIGN KEY (NomeMissao) REFERENCES TBL_MISSOES_TRIPULADAS(NomeMissao)
-);
-DESCRIBE TBL_TRIPULACAO;
-
-CREATE TABLE TBL_FUNCIONARIOS_TRIPULACAO (
-    ID_Tripulacao INT,
-    ID_Funcionario INT,
-    PRIMARY KEY (ID_Tripulacao, ID_Funcionario),
-    FOREIGN KEY (ID_Tripulacao) REFERENCES TBL_TRIPULACAO(ID_Tripulacao)
-);
-DESCRIBE TBL_FUNCIONARIOS_TRIPULACAO;
-
-CREATE TABLE TBL_FUNCIONARIOS (
-    ID_Funcionario INT PRIMARY KEY,
-    Status VARCHAR(50)
-);
-DESCRIBE TBL_FUNCIONARIOS;
-
-CREATE TABLE TBL_CIENTISTAS (
-    ID_Funcionario INT PRIMARY KEY,
-    AreaDePesquisa VARCHAR(100),
-    Especializacao INT,
-    FOREIGN KEY (ID_Funcionario) REFERENCES TBL_FUNCIONARIOS(ID_Funcionario)
-);
-DESCRIBE TBL_CIENTISTAS;
-
-CREATE TABLE TABELA_ESPECIALIZACAO_CIENTISTA (
-    ID_especializacao INT PRIMARY KEY,
-    Especializacao VARCHAR(100)
-);
-DESCRIBE TABELA_ESPECIALIZACAO_CIENTISTA;
-
-CREATE TABLE TBL_ENGENHEIRO (
-    ID_Funcionario INT PRIMARY KEY,
-    Especializacao INT,
-    FOREIGN KEY (ID_Funcionario) REFERENCES TBL_FUNCIONARIOS(ID_Funcionario)
-);
-DESCRIBE TBL_ENGENHEIRO;
-
-CREATE TABLE TABELA_ESPECIALIZACAO_ENGENHEIRO (
-    ID_especializacao INT PRIMARY KEY,
-    Especializacao VARCHAR(100)
-);
-DESCRIBE TABELA_ESPECIALIZACAO_ENGENHEIRO;
-
-CREATE TABLE TABELA_TIPO_FUNCIONARIOS (
-    ID_Funcionario INT,
-    TipoFuncionario VARCHAR(100),
-    PRIMARY KEY (ID_Funcionario),
-    FOREIGN KEY (ID_Funcionario) REFERENCES TBL_FUNCIONARIOS(ID_Funcionario)
-);
-DESCRIBE TABELA_TIPO_FUNCIONARIOS;
-
-CREATE TABLE TABELA_HISTORICO_MISSOES_FUNCIONARIO (
-    ID_Historico INT PRIMARY KEY,
-    ID_Funcionario INT,
-    FOREIGN KEY (ID_Funcionario) REFERENCES TBL_FUNCIONARIOS(ID_Funcionario)
-);
-DESCRIBE TABELA_HISTORICO_MISSOES_FUNCIONARIO;
-
-CREATE TABLE TABELA_HISTORICO_MISSOES_NOMEMISSAO (
-    ID_Historico INT PRIMARY KEY,
-    NomeMissao VARCHAR(100),
-    FOREIGN KEY (NomeMissao) REFERENCES TBL_MISSOES_TRIPULADAS(NomeMissao)
-);
-DESCRIBE TABELA_HISTORICO_MISSOES_NOMEMISSAO ;
-
-CREATE TABLE TABELA_ID_SETOR (
-    ID_SETOR INT PRIMARY KEY,
-    Setor VARCHAR(100)
-);
-DESCRIBE TABELA_ID_SETOR;
-
-CREATE TABLE TABELA_ADM (
-    ID_Funcionario INT PRIMARY KEY,
-    Nome VARCHAR(100),
-    Sobrenome VARCHAR(100),
-    FOREIGN KEY (ID_Funcionario) REFERENCES TBL_FUNCIONARIOS(ID_Funcionario)
-);
-DESCRIBE TABELA_ID_SETOR; 
-
-CREATE TABLE TABELA_FUNCIONARIO_SETOR (
-    ID_Funcionario INT,
-    ID_SETOR INT,
-    PRIMARY KEY (ID_Funcionario),
-    FOREIGN KEY (ID_Funcionario) REFERENCES TBL_FUNCIONARIOS(ID_Funcionario),
-    FOREIGN KEY (ID_SETOR) REFERENCES TABELA_ID_SETOR(ID_SETOR)
-);
-DESCRIBE TABELA_FUNCIONARIO_SETOR;
-
-CREATE TABLE TABELA_RH (
-    ID_Funcionario INT PRIMARY KEY,
-    ID_SETOR INT,
-    FOREIGN KEY (ID_Funcionario) REFERENCES TBL_FUNCIONARIOS(ID_Funcionario),
-    FOREIGN KEY (ID_SETOR) REFERENCES TABELA_ID_SETOR(ID_SETOR)
-);
-DESCRIBE TABELA_RH;
-
-CREATE TABLE TABELA_DADOS_FINANCEIROS (
-    NomeMissao VARCHAR(100),
-    Orcamento DECIMAL(10, 2),
-    Gastos DECIMAL(10, 2),
-    Receitas DECIMAL(10, 2),
-    BalancoFinanceiro DECIMAL(10, 2),
-    FOREIGN KEY (NomeMissao) REFERENCES TBL_MISSOES_TRIPULADAS(NomeMissao)
-);
-DESCRIBE TABELA_DADOS_FINANCEIROS;
-
-CREATE TABLE TABELA_DADOS_CIENTIFICOS (
-    NomeMissao VARCHAR(100),
-    DataDeLancamento DATE,
-    Conteudo TEXT,
-    FOREIGN KEY (NomeMissao) REFERENCES TBL_MISSOES_TRIPULADAS(NomeMissao)
-);
-DESCRIBE TABELA_DADOS_CIENTIFICOS;
-
-
+# select_statement:
+    [IGNORE | REPLACE] [AS] SELECT ...   (Some legal select statement)
