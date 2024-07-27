@@ -1,4 +1,5 @@
 -- 1. Consulta sobre planetas e suas características geológicas
+
 -- Mostrar o Nome dos planetas, Distancia e Características Geológicas
 SELECT p.Nome, p.Distancia, c.CaracteristicasGeologicas
 FROM TBL_PLANETAS p
