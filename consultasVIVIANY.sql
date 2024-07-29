@@ -1,22 +1,60 @@
 -- Consultas utilizando Funções Agregadas
 
--- Contar quantas naves estão inativas
-select count(*) as Naves_Inativas
-from interstellarinsight.tbl_naves as Inativas
-where Status = 'Inativa';
+--1.Número total de engenheiros por especialização
+SELECT e.Tipo AS Especializacao,COUNT(f.ID_Funcionario) AS TotalEngenheiros
+FROM TABELA_FUNCIONÁRIOS f
+JOIN tbl_tipo_funcionario e ON f.id_tipo = e.ID_Tipo
+WHERE f.id_tipo = 2  -- Tipo 2 é Engenheiro
+GROUP BY e.Tipo;
 
--- Selecionar o ID da menor estrela
-select EID_CorpoCeleste as ID_MenorEstrela
-from interstellarinsight.tbl_estrelas
-where Tamanho = (select min(Tamanho) from interstellarinsight.tbl_estrelas);
+--2.Encontrar a média de orçamento das missões tripuladas
+SELECT AVG(Orçamento) AS MediaOrcamento
+FROM TABELA_DADOS_FINANCEIROS;
 
--- Selecionar o ID da estrela mais distante
-select EID_CorpoCeleste as ID_MaiorDistancia
-from interstellarinsight.tbl_estrelas
-where Distancia = (select max(Distancia) from interstellarinsight.tbl_estrelas);
+--3.Contar o número total de missões por ano
+SELECT YEAR(DataDeLancamento) AS Ano,COUNT(*) AS TotalMissao
+FROM TBL_MISSOES_TRIPULADAS
+GROUP BY YEAR(DataDeLancamento);
 
--- Contar quantas sondas estão ativas
--- menos essa 
-select count(*) as Sondas_Ativas
-from interstellarinsight.TBL_SONDAS as Ativas
-where Status = 'Ativa';
+--SEM FUNÇÃO DE EXTRAÇÃO:
+
+--4.numero total de missões(tripuladas e não tripuladas)
+SELECT 
+    (SELECT COUNT(*) FROM TBL_MISSOES_TRIPULADAS) +
+    (SELECT COUNT(*) FROM TBL_MISSOES_NÃO_TRIPULADAS) AS TotalMissões
+;
+
+--5.Encontrar a missão com a maior quantidade total de dados científicos coletados
+SELECT d.`NomeMissão`,SUM(d.`ID_dados_científicos`) AS TotalDados
+FROM tabela_dados_científicos d
+GROUP BY d.`NomeMissão`
+ORDER BY TotalDados DESC
+LIMIT 1;
+
+--6.Encontrar a média de duração das missões tripuladas
+-- Para calcular a média da duração das missões tripuladas em dias
+SELECT AVG(CAST(SUBSTRING_INDEX(Duracao, ' ', 1) AS DECIMAL)) AS MediaDuracao
+FROM TBL_MISSOES_TRIPULADAS;
+
+--7.Encontrar a missão mais recente
+SELECT NomeMissao,MAX(DataDeLancamento) AS DataRecente
+FROM TBL_MISSOES_TRIPULADAS
+GROUP BY NomeMissao
+ORDER BY DataRecente DESC
+LIMIT 1;
+
+--8.Contar o número total de cientistas por área de pesquisa
+SELECT ÁreaDePesquisa, COUNT(*) AS TotalCientistas
+FROM TABELA_CIENTISTA
+GROUP BY ÁreaDePesquisa;
+
+--9.Encontrar a média de gastos das missões
+SELECT AVG(Gastos) AS MediaGastos
+FROM TABELA_DADOS_FINANCEIROS;
+
+--10Encontrar a missão com o maior número de astronautas
+SELECT NomeMissão, COUNT(ID_Funcionario) AS TotalAstronautas
+FROM tbl_tripulação
+GROUP BY NomeMissão
+ORDER BY TotalAstronautas DESC
+LIMIT 1;
