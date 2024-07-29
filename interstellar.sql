@@ -211,25 +211,28 @@ INSERT INTO TABELA_FUNCIONÁRIOS (ID_Funcionario, id_tipo, Nome, Sobrenome, Sal�
 (13,1, 'Stephen', 'Hawking', 180000.00),
 (14, 2,'Katherine', 'Johnson', 125000.00);
 
-
+DROP TABLE tbl_tripulação;
 -- TABELA_TRIPULAÇÃO
-CREATE TABLE TBL_TRIPULAÇÃO (
+-- Criação da tabela com o nome correto
+CREATE TABLE tbl_tripulação (
     ID_Tripulacao INT PRIMARY KEY,
     NomeMissão VARCHAR(255),
-    ID_Funcionário INT,
-    FOREIGN KEY (NomeMissão) REFERENCES TBL_MISSÕES_TRIPULADAS(NomeMissão),
-    FOREIGN KEY (ID_Funcionário) REFERENCES TABELA_FUNCIONÁRIOS(ID_Funcionario)
+    ID_Funcionario INT,
+    FOREIGN KEY (NomeMissão) REFERENCES TBL_MISSOES_TRIPULADAS(NomeMissao),
+    FOREIGN KEY (ID_Funcionario) REFERENCEs TABELA_FUNCIONÁRIOS(ID_Funcionario)
 );
-INSERT INTO TBL_TRIPULAÇÃO (ID_Tripulacao,NomeMissão, ID_Funcionário) VALUES
+
+-- Inserção dos dados
+INSERT INTO tbl_tripulação (ID_Tripulacao,NomeMissão, ID_Funcionario) VALUES
 (1, 'Apollo 11', 1),
-(1, 'Apollo 11', 2),
-(2,'Demo-2', 3),
-(2,'Demo-2', 4),
-(3,'Mars 2020', 5),
-(3,'Mars 2020', 6),
-(4,'Shenzhou 12', 7),
-(4,'Shenzhou 12', 8);
-    
+(2, 'Apollo 11', 2),
+(3, 'Demo-2', 3),
+(4, 'Demo-2', 4),
+(5, 'Mars 2020', 5),
+(6, 'Mars 2020', 6),
+(7, 'Shenzhou 12', 7),
+(8, 'Shenzhou 12', 8);
+ 
 
 CREATE TABLE Tbl_especializacao (
     ID_especializacao INT PRIMARY KEY,
