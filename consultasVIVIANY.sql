@@ -16,6 +16,7 @@ from interstellarinsight.tbl_estrelas
 where Distancia = (select max(Distancia) from interstellarinsight.tbl_estrelas);
 
 -- Contar quantas sondas estão ativas
+-- menos essa 
 select count(*) as Sondas_Ativas
 from interstellarinsight.TBL_SONDAS as Ativas
 where Status = 'Ativa';

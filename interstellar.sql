@@ -24,14 +24,16 @@ INSERT INTO TBL_CORPO_CELESTE (ID_CorpoCeleste, Nome) VALUES
 (14, 'Procyon');
 -- TABELA_PLANETAS
 CREATE TABLE TBL_PLANETAS (
-    ID_CorpoCeleste INT PRIMARY KEY,
+    ID_CorpoCeleste INT,
     Distância VARCHAR(255),
     Tamanho VARCHAR(255),
     Composição VARCHAR(255),
     Atmosfera VARCHAR(255),
     Características_Geológicas TEXT,
+    PRIMARY KEY (ID_CorpoCeleste),
     FOREIGN KEY (ID_CorpoCeleste) REFERENCES TBL_CORPO_CELESTE(ID_CorpoCeleste)
 );
+
 INSERT INTO TBL_PLANETAS (ID_CorpoCeleste, Distância, Tamanho, Composição, Atmosfera, Características_Geológicas) VALUES
 (1, '57.91 milhões km do Sol', '4.880 km', 'Rochoso', 'Não possui atmosfera significativa', 'Superfície com crateras e planícies'),
 (2, '108 milhões km do Sol', '12.104 km', 'Rochoso', 'Dióxido de carbono', 'Vulcões, planícies e montanhas'),
@@ -126,26 +128,29 @@ INSERT INTO TBL_GALÁXIAS (ID_Galáxia, Nome) VALUES
 (7, 'Galáxia da Pata de Gato');
 
 -- TABELA_MISSÕES_TRIPULADAS
-CREATE TABLE TBL_MISSÕES_TRIPULADAS (
-    NomeMissão VARCHAR(255) PRIMARY KEY,
-    DataDeLançamento DATE,
-    Duração VARCHAR(255),
+
+CREATE TABLE TBL_MISSOES_TRIPULADAS (
+    NomeMissao VARCHAR(255) PRIMARY KEY,
+    DataDeLancamento DATE,
+    Duracao VARCHAR(255),
     Objetivos TEXT,
     ID_CorpoCeleste INT,
     ID_Nave INT,
+    ID_Galáxia INT,
     FOREIGN KEY (ID_CorpoCeleste) REFERENCES TBL_CORPO_CELESTE(ID_CorpoCeleste),
-    FOREIGN KEY (ID_Nave) REFERENCES TBL_NAVES(ID_Nave)
+    FOREIGN KEY (ID_Nave) REFERENCES TBL_NAVES(ID_Nave),
+    FOREIGN KEY (ID_Galáxia) REFERENCES TBL_GALÁXIAS(ID_Galáxia)
 );
-INSERT INTO TBL_MISSÕES_TRIPULADAS (NomeMissão, DataDeLançamento, Duração, Objetivos, ID_CorpoCeleste, ID_Nave) VALUES
-('Apollo 11', '1969-07-16', '8 dias', 'Pousar na Lua e retornar em segurança', 3, 1),
-('Demo-2', '2020-05-30', '64 dias', 'Testar e certificar a Dragon 2 para missões tripuladas', 4, 2),
-('Mars 2020', '2020-07-30', '687 dias', 'Explorar Marte e coletar amostras', 4, 7),
-('Gemini 4', '1965-06-03', '4 dias', 'Realizar a primeira caminhada no espaço', 3, 3),
-('Apollo 13', '1970-04-11', '6 dias', 'Missão abortada devido a problemas técnicos', 4, 1),
-('Shenzhou 12', '2021-06-17', '30 dias', 'Construir e manter a estação espacial Tiangong', 4, 7),
-('Soyuz MS-09', '2018-06-06', '187 dias', 'Visitar a ISS', 4, 7),
-('Apollo 15', '1971-07-26', '12 dias', 'Explorar a Lua com um rover', 4, 1);
 
+INSERT INTO TBL_MISSOES_TRIPULADAS (NomeMissao, DataDeLancamento, Duracao, Objetivos, ID_CorpoCeleste, ID_Nave, ID_Galáxia) VALUES
+('Apollo 11', '1969-07-16', '8 dias', 'Pousar na Lua e retornar em segurança', 3, 1, 1),
+('Demo-2', '2020-05-30', '64 dias', 'Testar e certificar a Dragon 2 para missoes tripuladas', 4, 2, 3),
+('Mars 2020', '2020-07-30', '687 dias', 'Explorar Marte e coletar amostras', 4, 7, 3),
+('Gemini 4', '1965-06-03', '4 dias', 'Realizar a primeira caminhada no espaco', 3, 6, 1),
+('Apollo 13', '1970-04-11', '6 dias', 'Missao abortada devido a problemas tecnicos', 4, 1, 1),
+('Shenzhou 12', '2021-06-17', '30 dias', 'Construir e manter a estacao espacial Tiangong', 4, 7, 1),
+('Soyuz MS-09', '2018-06-06', '187 dias', 'Visitar a ISS', 4, 7, 1),
+('Apollo 15', '1971-07-26', '12 dias', 'Explorar a Lua com um rover', 4, 1, 1);
 
 -- TABELA_MISSOES_NÃO_TRIPULADAS
 CREATE TABLE TBL_MISSOES_NÃO_TRIPULADAS (
@@ -154,100 +159,108 @@ CREATE TABLE TBL_MISSOES_NÃO_TRIPULADAS (
     ID_CorpoCeleste INT,
     Objetivos TEXT,
     ID_Sonda INT,
+    Duracao VARCHAR(255),
     FOREIGN KEY (ID_CorpoCeleste) REFERENCES TBL_CORPO_CELESTE(ID_CorpoCeleste),
     FOREIGN KEY (ID_Sonda) REFERENCES TBL_SONDAS(ID_Sonda)
 );
----erro 
-INSERT INTO TBL_MISSOES_NÃO_TRIPULADAS (NomeMissão, DataDeLançamento, ID_CorpoCeleste, Objetivos, ID_Sonda) VALUES
-('New Horizons', '2006-01-19', 4, 'Explorar Plutão e o Cinturão de Kuiper', 2),
-('Pioneer 10', '1972-03-02', 5, 'Explorar Júpiter', 3),
-('Pioneer 11', '1973-04-06', 5, 'Explorar Saturno', 4),
-('Voyager 2', '1977-08-20', 5, 'Explorar os planetas exteriores e o espaço interestelar', 5),
-('Juno', '2011-08-05', 9, 'Analisar a orbita do cometa  ', 6),
-('Cassini', '1997-10-15', 10, 'Analisar a orbita do  cometa ', 7),
-('Hubble', '1990-04-24', 7, 'Observações astronômicas', 8);
+ 
+INSERT INTO TBL_MISSOES_NÃO_TRIPULADAS (NomeMissão, DataDeLançamento, ID_CorpoCeleste, Objetivos, ID_Sonda, Duracao) VALUES
+('New Horizons', '2006-01-19', 4, 'Explorar Plutão e o Cinturão de Kuiper', 2, 'Em operação'),
+('Pioneer 10', '1972-03-02', 9, 'Explorar Júpiter', 3, 'Em operação'),
+('Pioneer 11', '1973-04-06', 5, 'Explorar Saturno', 4, 'Em operação'),
+('Voyager 2', '1977-08-20', 5, 'Explorar os planetas exteriores e o espaço interestelar', 5, 'Em operação'),
+('Juno', '2011-08-05', 9, 'Analisar a orbita do cometa', 6, 'Em operação'),
+('Cassini', '1997-10-15', 10, 'Analisar a orbita do cometa', 7, 'Em operação'),
+('Hubble', '1990-04-24', 7, 'Observações astronômicas', 8, 'Em operação');
+
+
+CREATE  TABLE TBL_TIPO_FUNCIONARIO(
+    ID_Tipo INT PRIMARY KEY,
+    Tipo VARCHAR(255)
+);
+INSERT INTO TBL_TIPO_FUNCIONARIO (ID_Tipo, Tipo) VALUES
+(1, 'Cientista'),
+(2, 'Engenheiro'),
+(3, 'Astronauta'),
+(4, 'Administrativo'),
+(5, 'Recursos Humanos');
 
 
 -- TABELA_FUNCIONÁRIOS
 CREATE TABLE TABELA_FUNCIONÁRIOS (
     ID_Funcionario INT PRIMARY KEY,
+    id_tipo INT,
     Nome VARCHAR(255),
     Sobrenome VARCHAR(255),
-    Salário DECIMAL(10,2)
+    Salário DECIMAL(10,2),
+    FOREIGN KEY (id_tipo) REFERENCES TBL_TIPO_FUNCIONARIO(ID_Tipo)
 );
-INSERT INTO TABELA_FUNCIONÁRIOS (ID_Funcionario, Nome, Sobrenome, Salário) VALUES
-(1, 'John', 'Doe', 120000.00),
-(2, 'Jane', 'Smith', 135000.00),
-(3, 'Alan', 'Turing', 150000.00),
-(4, 'Ada', 'Lovelace', 140000.00),
-(5, 'Carl', 'Sagan', 160000.00),
-(6, 'Neil', 'Armstrong', 170000.00),
-(7, 'Mae', 'Jemison', 155000.00),
-(8, 'Galileo', 'Galilei', 125000.00),
-(9, 'Isaac', 'Newton', 130000.00),
-(10, 'Nikola', 'Tesla', 145000.00),
-(11, 'Marie', 'Curie', 165000.00),
-(12, 'Albert', 'Einstein', 175000.00),
-(13, 'Stephen', 'Hawking', 180000.00),
-(14, 'Katherine', 'Johnson', 125000.00);
+INSERT INTO TABELA_FUNCIONÁRIOS (ID_Funcionario, id_tipo, Nome, Sobrenome, Salário) VALUES
+(1,1,'John', 'Doe', 120000.00),
+(2,1, 'Jane', 'Smith', 135000.00),
+(3,2, 'Alan', 'Turing', 150000.00),
+(4,3, 'Ada', 'Lovelace', 140000.00),
+(5,1, 'Carl', 'Sagan', 160000.00),
+(6,4, 'Neil', 'Armstrong', 170000.00),
+(7,1,'Mae', 'Jemison', 155000.00),
+(8,3, 'Galileo', 'Galilei', 125000.00),
+(9,5,'Isaac', 'Newton', 130000.00),
+(10,3, 'Nikola', 'Tesla', 145000.00),
+(11, 4,'Marie', 'Curie', 165000.00),
+(12, 2,'Albert', 'Einstein', 175000.00),
+(13,1, 'Stephen', 'Hawking', 180000.00),
+(14, 2,'Katherine', 'Johnson', 125000.00);
 
 
 -- TABELA_TRIPULAÇÃO
 CREATE TABLE TBL_TRIPULAÇÃO (
+    ID_Tripulacao INT PRIMARY KEY,
     NomeMissão VARCHAR(255),
     ID_Funcionário INT,
-    PRIMARY KEY (NomeMissão, ID_Funcionário),
     FOREIGN KEY (NomeMissão) REFERENCES TBL_MISSÕES_TRIPULADAS(NomeMissão),
     FOREIGN KEY (ID_Funcionário) REFERENCES TABELA_FUNCIONÁRIOS(ID_Funcionario)
 );
-INSERT INTO TBL_TRIPULAÇÃO (NomeMissão, ID_Funcionário) VALUES
-('Apollo 11', 1),
-('Apollo 11', 2),
-('Demo-2', 3),
-('Demo-2', 4),
-('Mars 2020', 5),
-('Mars 2020', 6),
-('Shenzhou 12', 7),
-('Shenzhou 12', 8);
+INSERT INTO TBL_TRIPULAÇÃO (ID_Tripulacao,NomeMissão, ID_Funcionário) VALUES
+(1, 'Apollo 11', 1),
+(1, 'Apollo 11', 2),
+(2,'Demo-2', 3),
+(2,'Demo-2', 4),
+(3,'Mars 2020', 5),
+(3,'Mars 2020', 6),
+(4,'Shenzhou 12', 7),
+(4,'Shenzhou 12', 8);
+    
 
+CREATE TABLE Tbl_especializacao (
+    ID_especializacao INT PRIMARY KEY,
+    Especializacao VARCHAR(255)
+);
+
+INSERT INTO Tbl_especializacao (ID_especializacao, Especializacao) VALUES
+(1, 'Astrofísica'),
+(2, 'Biologia Molecular'),
+(3, 'Química Orgânica'),
+(4, 'Física de Partículas'),
+(5, 'Geologia Planetária'),
+(6, 'Biologia Espacial'),
+(7, 'Química Cósmica'),
+(8, 'Química Inorgânica'),
+(9, 'Física Teórica'),
+(10, 'Física Experimental');
+
+DROP TABLE TABELA_CIENTISTA;
 -- TABELA_CIENTISTA
 CREATE TABLE TABELA_CIENTISTA (
     ID_Funcionário INT PRIMARY KEY,
     ÁreaDePesquisa VARCHAR(255),
-    Especialização INT,
-    FOREIGN KEY (ID_Funcionário) REFERENCES TABELA_FUNCIONÁRIOS(ID_Funcionario)
+    ID_Especialização INT,
+    FOREIGN KEY (ID_Funcionário) REFERENCES TABELA_FUNCIONÁRIOS(ID_Funcionario),
+    FOREIGN KEY (ID_Especialização) REFERENCES Tbl_especializacao(ID_especializacao)
 );
-INSERT INTO TABELA_CIENTISTA (ID_Funcionário, ÁreaDePesquisa, Especialização) VALUES
+INSERT INTO TABELA_CIENTISTA (ID_Funcionário, ÁreaDePesquisa, ID_Especialização) VALUES
 (1, 'Astrofísica', 1),
 (2, 'Biologia Molecular', 2),
 (8, 'Química Cósmica', 8);
-
-
-
--- TABELA_ESPECILIZACAO_CIENTISTA
-CREATE TABLE TABELA_ESPECIALIZACAO_CIENTISTA (
-    ID_Funcionario INT,
-    Especialização INT,
-    PRIMARY KEY (ID_Funcionario, Especialização),
-    FOREIGN KEY (ID_Funcionario) REFERENCES TABELA_CIENTISTA(ID_Funcionário)
-);
-INSERT INTO TABELA_ESPECIALIZACAO_CIENTISTA (ID_Funcionario, Especialização) VALUES
-(1, 1),
-(2, 2),
-(8, 8);
-
-
--- TABELA_ENGENHEIRO
-CREATE TABLE TABELA_ENGENHEIRO (
-    ID_Funcionário INT PRIMARY KEY,
-    Especialização CHAR(255),
-    FOREIGN KEY (ID_Funcionário) REFERENCES TABELA_FUNCIONÁRIOS(ID_Funcionario)
-);
-INSERT INTO TABELA_ENGENHEIRO (ID_Funcionário, Especialização) VALUES
-(3, 'Mecanica'),
-(4, 'Aeroespacial'),
-(5, 'Elétrica');
-
 
 -- TABELA_ASTRONAUTAS
 CREATE TABLE TABELA_ASTRONAUTAS (
@@ -259,83 +272,44 @@ INSERT INTO TABELA_ASTRONAUTAS (ID_Funcionário, Status) VALUES
 (6, 'Ativo'),
 (7, 'Desativado');
 
-drop TABLE tabela_adm;
--- TABELA_ADM
-CREATE TABLE TABELA_ADM (
-    ID_Funcionário INT,
-    Setor VARCHAR(255),
-    PRIMARY KEY (ID_Funcionário),
-    FOREIGN KEY (ID_Funcionário) REFERENCES TABELA_FUNCIONÁRIOS(ID_Funcionario)
-);
---erro
-INSERT INTO TABELA_ADM (ID_Funcionário, Setor) VALUES
-(10, 'Financeiro'),
-(11, 'Recursos Humanos'),
-(12, 'Financeiro'),
-(13, 'Recursos Humanos'),
-(14, 'Financeiro');
 
--- TABELA_RH
-CREATE TABLE TABELA_RH (
-    ID_Funcionário INT,
-    Setor VARCHAR(255),
-    PRIMARY KEY (ID_Funcionário),
-    FOREIGN KEY (ID_Funcionário) REFERENCES TABELA_FUNCIONÁRIOS(ID_Funcionario)
-);
-INSERT INTO tabela_rh (ID_Funcionário, Setor) VALUES
-(9, 'Recursos Humanos'),
-(11, 'Recursos Humanos'),
-(13, 'Recursos Humanos');
-
+DROP TABLE TABELA_DADOS_FINANCEIROS;
 -- TABELA_DADOS_FINANCEIROS
 CREATE TABLE TABELA_DADOS_FINANCEIROS (
+    ID_dados_financeiros INT PRIMARY KEY,
     Nome_Missão VARCHAR(255),
     Orçamento DECIMAL(15,2),
     Gastos DECIMAL(15,2),
     Receitas DECIMAL(15,2),
     BalançosFinanceiros DECIMAL(15,2),
-    PRIMARY KEY (Nome_Missão),
     FOREIGN KEY (Nome_Missão) REFERENCES TBL_MISSÕES_TRIPULADAS(NomeMissão)
 );
-INSERT INTO tabela_dados_financeiros (Nome_Missão, Orçamento, Gastos, Receitas, BalançosFinanceiros) VALUES
-('Apollo 11', 1000000.00, 800000.00, 1200000.00, 400000.00),
-('Demo-2', 2000000.00, 1500000.00, 2500000.00, 1000000.00),
-('Mars 2020', 3000000.00, 2500000.00, 3500000.00, 1000000.00),
-('Gemini 4', 4000000.00, 3500000.00, 4500000.00, 1000000.00),
-('Apollo 13', 5000000.00, 4500000.00, 5500000.00, 1000000.00),
-('Shenzhou 12', 6000000.00, 5500000.00, 6500000.00, 1000000.00),
-('Soyuz MS-09', 7000000.00, 6500000.00, 7500000.00, 1000000.00),
-('Apollo 15', 8000000.00, 7500000.00, 8500000.00, 1000000.00);
+INSERT INTO tabela_dados_financeiros (ID_dados_financeiros,Nome_Missão, Orçamento, Gastos, Receitas, BalançosFinanceiros) VALUES
+(1,'Apollo 11', 1000000.00, 800000.00, 1200000.00, 400000.00),
+(2,'Demo-2', 2000000.00, 1500000.00, 2500000.00, 1000000.00),
+(3,'Mars 2020', 3000000.00, 2500000.00, 3500000.00, 1000000.00),
+(4,'Gemini 4', 4000000.00, 3500000.00, 4500000.00, 1000000.00),
+(5,'Apollo 13', 5000000.00, 4500000.00, 5500000.00, 1000000.00),
+(6,'Shenzhou 12', 6000000.00, 5500000.00, 6500000.00, 1000000.00),
+(7,'Soyuz MS-09', 7000000.00, 6500000.00, 7500000.00, 1000000.00),
+(8,'Apollo 15', 8000000.00, 7500000.00, 8500000.00, 1000000.00);
+
 
 CREATE TABLE TABELA_DADOS_CIENTÍFICOS (
+    ID_dados_científicos INT PRIMARY KEY,
     NomeMissão VARCHAR(255),
     DataDeLançamento DATE,
     Conteúdo TEXT,
-    PRIMARY KEY (NomeMissão),
     FOREIGN KEY (NomeMissão) REFERENCES TBL_MISSOES_NÃO_TRIPULADAS(NomeMissão)
 );
-INSERT INTO tabela_dados_científicos (NomeMissão, DataDeLançamento, Conteúdo) VALUES
-('Voyager 1', '1977-09-05', 'Explorou Júpiter e Saturno'),
-('New Horizons', '2006-01-19', 'Explorou Plutão e o Cinturão de Kuiper'),
-('Pioneer 10', '1972-03-02', 'Explorou Júpiter'),
-('Pioneer 11', '1973-04-06', 'Explorou Saturno'),
-('Voyager 2', '1977-08-20', 'Explorou Júpiter, Saturno, Urano e Netuno'),
-('Juno', '2011-08-05', 'Explorou Júpiter'),
-('Cassini', '1997-10-15', 'Explorou Saturno'),
-('Hubble', '1990-04-24', 'Observações astronômicas');
+INSERT INTO tabela_dados_científicos (ID_dados_científicos,NomeMissão, DataDeLançamento, Conteúdo) VALUES
+(1,'Voyager 1', '1977-09-05', 'Explorou Júpiter e Saturno'),
+(2,'New Horizons', '2006-01-19', 'Explorou Plutão e o Cinturão de Kuiper'),
+(3,'Pioneer 10', '1972-03-02', 'Explorou Júpiter'),
+(4,'Pioneer 11', '1973-04-06', 'Explorou Saturno'),
+(5,'Voyager 2', '1977-08-20', 'Explorou Júpiter, Saturno, Urano e Netuno'),
+(6,'Juno', '2011-08-05', 'Explorou Júpiter'),
+(7,'Cassini', '1997-10-15', 'Explorou Saturno'),
+(8,'Hubble', '1990-04-24', 'Observações astronômicas');
 
-CREATE TABLE TBL_MISSOES_GALAXIAS (
-    NomeMissão VARCHAR(255),
-    ID_Galáxia INT,
-    FOREIGN KEY (NomeMissão) REFERENCES TBL_MISSÕES_TRIPULADAS(NomeMissão),
-    FOREIGN KEY (ID_Galáxia) REFERENCES TBL_GALÁXIAS(ID_Galáxia)
-);
-
-INSERT INTO TBL_MISSOES_GALAXIAS (NomeMissão, ID_Galáxia) VALUES
-('Apollo 11', 3),          
-('Demo-2', 3),            
-('Mars 2020', 3),         
-('Gemini 4', 3),          
-('Shenzhou 12', 3),       
-('Soyuz MS-09', 3),       
-('Apollo 15', 3);         
+       
