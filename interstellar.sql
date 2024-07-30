@@ -52,8 +52,9 @@ CREATE TABLE TBL_COMETAS (
     FOREIGN KEY (ID_CorpoCeleste) REFERENCES TBL_CORPO_CELESTE(ID_CorpoCeleste)
 );
 INSERT INTO TBL_COMETAS (ID_CorpoCeleste, Órbita, Tipodecoma, Posição) VALUES
-(9, 'Elíptica', 'Nuvem de poeira e gases', 'Período de 76 anos'),
-(11, 'Elíptica', 'Coma de água e poeira', 'Período de 2000 anos');
+(9, 'Elíptica', 'Nuvem de poeira e gases', 'Período de 76 anos');
+INSERT INTO TBL_COMETAS (ID_CorpoCeleste, Órbita, Tipodecoma, Posição) VALUES
+(10, 'Elíptica', 'Coma de água e poeira', 'Período de 2000 anos');
 
 -- TABELA_ESTRELAS
 CREATE TABLE TBL_ESTRELAS (

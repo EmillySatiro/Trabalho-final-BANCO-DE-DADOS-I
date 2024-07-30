@@ -93,7 +93,7 @@ RIGHT JOIN TBL_TIPO_FUNCIONARIO T ON F.id_tipo = T.ID_Tipo;
 --2.Obter todos os cometas e seus tipos de coma, se houver.
 SELECT C.ID_CorpoCeleste,C.Órbita AS Orbita_Cometa,C.Tipodecoma AS Tipo_de_Coma
 FROM TBL_COMETAS C
-RIGHT JOIN TBL_CORPO_CELESTE C2 ON C.ID_CorpoCeleste = C2.ID_CorpoCeleste;
+RIGHT JOIN tbl_cometas C2 ON C.ID_CorpoCeleste = C2.ID_CorpoCeleste;
 
 --3.Obter todos os detalhes das missões tripuladas, se houver
 SELECT M.NomeMissao,M.DataDeLancamento,M.Duracao,M.Objetivos,N.Nome AS Nome_Nave
