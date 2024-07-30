@@ -18,11 +18,17 @@ GROUP BY YEAR(DataDeLancamento);
 
 --SEM FUNÇÃO DE EXTRAÇÃO:
 
---4.numero total de missões(tripuladas e não tripuladas)
+--.numero total de missões(tripuladas e não tripuladas)
 SELECT 
     (SELECT COUNT(*) FROM TBL_MISSOES_TRIPULADAS) +
     (SELECT COUNT(*) FROM TBL_MISSOES_NÃO_TRIPULADAS) AS TotalMissões
 ;
+
+--4.Contar quantas naves estão inativas
+SELECT COUNT(*) AS Total_Naves_Inativas
+FROM TBL_NAVES
+WHERE Status = 'Desativada';
+
 
 --5.Encontrar a missão com a maior quantidade total de dados científicos coletados
 SELECT d.`NomeMissão`,SUM(d.`ID_dados_científicos`) AS TotalDados

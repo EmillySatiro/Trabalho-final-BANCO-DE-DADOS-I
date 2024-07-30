@@ -9,7 +9,10 @@ SELECT f.Nome, f.Sobrenome
 FROM TABELA_FUNCIONÁRIOS f
 JOIN TABELA_CIENTISTA c ON f.ID_Funcionario = c.ID_Funcionário;
 
---Intersecção entre as sondas e naves que estão ativas// consulta invalida 
+--Intersecção entre as sondas e naves que estão ativas// consulta em analise
+SELECT S.Nome AS Nome_Sonda,N.Nome AS Nome_Nave
+FROM TBL_SONDAS S
+INNER JOIN TBL_NAVES N ON S.Status = 'Ativa' AND N.Status = 'Ativa';
 
 --Subtração entre naves e sondas para obter somente as sondas inativas
 SELECT Nome

@@ -27,12 +27,7 @@ GROUP BY g.ID_Galáxia, g.Nome;
 
 -- 5. Consulta sobre funcionários, setores e tipos de funcionários
 -- Mostrar o ID dos funcionários, Status e Tipo de Funcionário
-SELECT 
-    f.ID_Funcionario AS ID_Funcionario,
-    t.Tipo AS Tipo_Funcionario
-FROM 
-    TABELA_FUNCIONÁRIOS f
-JOIN 
-    tbl_tipo_funcionario t 
-ON 
-    f.`ID_Funcionario` = t.ID_Tipo;
+SELECT f.ID_Funcionario AS ID_Funcionario,t.Tipo AS Tipo_Funcionario
+FROM TABELA_FUNCIONÁRIOS f
+JOIN tbl_tipo_funcionario t 
+ON f.`ID_Funcionario` = t.ID_Tipo;
