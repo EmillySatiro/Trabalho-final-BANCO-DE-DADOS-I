@@ -1,4 +1,5 @@
 -- Consultas utilizando Funções Agregadas
+use kk
 
 --1.Número total de engenheiros por especialização
 SELECT e.Tipo AS Especializacao,COUNT(f.ID_Funcionario) AS TotalEngenheiros
