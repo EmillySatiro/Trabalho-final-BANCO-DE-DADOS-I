@@ -27,6 +27,7 @@ GROUP BY g.ID_Galáxia, g.Nome;
 
 -- 5. Consulta sobre funcionários, setores e tipos de funcionários
 -- Mostrar o ID dos funcionários, Status e Tipo de Funcionário
+--erro
 SELECT f.ID_Funcionario, f.Status, tf.Tipo_Funcionario
 FROM TBL_FUNCIONARIOS f
 INNER JOIN TABELA_TIPO_FUNCIONARIOS tf ON f.ID_Funcionario = tf.ID_Funcionario;

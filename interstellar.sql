@@ -168,6 +168,17 @@ INSERT INTO TBL_MISSOES_NÃO_TRIPULADAS (NomeMissão, DataDeLançamento, ID_Corp
 ('Hubble', '1990-04-24', 7, 'Observações astronômicas', 8);
 
 
+CREATE  TABLE TBL_TIPO_FUNCIONARIO(
+    ID_Tipo INT PRIMARY KEY,
+    Tipo VARCHAR(255)
+);
+INSERT INTO TBL_TIPO_FUNCIONARIO (ID_Tipo, Tipo) VALUES
+(1, 'Cientista'),
+(2, 'Engenheiro'),
+(3, 'Astronauta'),
+(4, 'Administrativo'),
+(5, 'Recursos Humanos');
+
 -- TABELA_FUNCIONÁRIOS
 CREATE TABLE TABELA_FUNCIONÁRIOS (
     ID_Funcionario INT PRIMARY KEY,
@@ -259,7 +270,7 @@ INSERT INTO TABELA_ASTRONAUTAS (ID_Funcionário, Status) VALUES
 (6, 'Ativo'),
 (7, 'Desativado');
 
-drop TABLE tabela_adm;
+;
 -- TABELA_ADM
 CREATE TABLE TABELA_ADM (
     ID_Funcionário INT,
@@ -267,7 +278,7 @@ CREATE TABLE TABELA_ADM (
     PRIMARY KEY (ID_Funcionário),
     FOREIGN KEY (ID_Funcionário) REFERENCES TABELA_FUNCIONÁRIOS(ID_Funcionario)
 );
---erro
+
 INSERT INTO TABELA_ADM (ID_Funcionário, Setor) VALUES
 (10, 'Financeiro'),
 (11, 'Recursos Humanos'),
@@ -307,6 +318,7 @@ INSERT INTO tabela_dados_financeiros (Nome_Missão, Orçamento, Gastos, Receitas
 ('Soyuz MS-09', 7000000.00, 6500000.00, 7500000.00, 1000000.00),
 ('Apollo 15', 8000000.00, 7500000.00, 8500000.00, 1000000.00);
 
+
 CREATE TABLE TABELA_DADOS_CIENTÍFICOS (
     NomeMissão VARCHAR(255),
     DataDeLançamento DATE,
@@ -315,7 +327,6 @@ CREATE TABLE TABELA_DADOS_CIENTÍFICOS (
     FOREIGN KEY (NomeMissão) REFERENCES TBL_MISSOES_NÃO_TRIPULADAS(NomeMissão)
 );
 INSERT INTO tabela_dados_científicos (NomeMissão, DataDeLançamento, Conteúdo) VALUES
-('Voyager 1', '1977-09-05', 'Explorou Júpiter e Saturno'),
 ('New Horizons', '2006-01-19', 'Explorou Plutão e o Cinturão de Kuiper'),
 ('Pioneer 10', '1972-03-02', 'Explorou Júpiter'),
 ('Pioneer 11', '1973-04-06', 'Explorou Saturno'),

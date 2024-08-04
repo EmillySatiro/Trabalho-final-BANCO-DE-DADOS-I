@@ -1,5 +1,6 @@
 -- Junção Interna (INNER JOIN)
 -- 1. Mostrar planetas e suas características geológicas
+
 SELECT p.ID_CorpoCeleste, p.Distancia, p.Tamanho, p.Composicao, p.atmosfera, c.CaracteristicasGeologicas
 FROM TBL_PLANETAS p
 INNER JOIN TBL_CARACTERISTICAS_GEOLOGICAS c ON p.ID_CorpoCeleste = c.ID_CorpoCeleste;

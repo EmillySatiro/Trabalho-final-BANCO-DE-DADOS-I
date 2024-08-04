@@ -1,7 +1,7 @@
 -- Cinco consultas que utilizem os operadores de intersecção, união ou subtração
-USE kk;
-
 --União entre todos os funcionários cadastrados como engenheiro e como cientistas
+
+--erro
 SELECT tf.id_tipo,tf.Nome
 FROM TABELA_FUNCIONÁRIOS tf
 WHERE id_tipo = 2

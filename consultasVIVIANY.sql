@@ -1,6 +1,6 @@
 -- Consultas utilizando Funções Agregadas
-use kk
 
+--erro
 --1.Número total de engenheiros por especialização
 SELECT e.Tipo AS Especializacao,COUNT(f.ID_Funcionario) AS TotalEngenheiros
 FROM TABELA_FUNCIONÁRIOS f
@@ -12,13 +12,14 @@ GROUP BY e.Tipo;
 SELECT AVG(Orçamento) AS MediaOrcamento
 FROM TABELA_DADOS_FINANCEIROS;
 
+--erro
 --3.Contar o número total de missões por ano
 SELECT YEAR(DataDeLancamento) AS Ano,COUNT(*) AS TotalMissao
 FROM TBL_MISSOES_TRIPULADAS
 GROUP BY YEAR(DataDeLancamento);
 
 --SEM FUNÇÃO DE EXTRAÇÃO:
-
+--erro
 --.numero total de missões(tripuladas e não tripuladas)
 SELECT 
     (SELECT COUNT(*) FROM TBL_MISSOES_TRIPULADAS) +
