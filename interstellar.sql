@@ -2,7 +2,7 @@
 CREATE DATABASE interstellarinsight 
 DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci;
-USE kk;
+USE interstellarinsight;
 CREATE TABLE TBL_CORPO_CELESTE (
     ID_CorpoCeleste INT PRIMARY KEY,
     Nome VARCHAR(255)
