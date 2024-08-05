@@ -1,63 +1,79 @@
 -- Gatilho para Atualizar o Salário ao Alterar o Cargo
 --Atualiza o salário de um funcionário se o cargo for alterado para 'Cientista' ou 'Engenheiro
+
 CREATE TRIGGER AtualizaSalario
-AFTER UPDATE ON TABELA_FUNCIONÁRIOS
+BEFORE UPDATE ON TABELA_FUNCIONARIOS
 FOR EACH ROW
 BEGIN
-    IF NEW.id_tipo IN (1, 2) THEN
-        UPDATE TABELA_FUNCIONÁRIOS
-        SET Salário = CASE
-            WHEN NEW.id_tipo = 1 THEN 160000.00 -- Valor para Cientistas
-            WHEN NEW.id_tipo = 2 THEN 150000.00 -- Valor para Engenheiros
-        END
-        WHERE ID_Funcionario = NEW.ID_Funcionario;
+    IF OLD.ID_Tipo <> NEW.ID_Tipo THEN
+        IF NEW.ID_Tipo = 2 THEN  -- Cientista
+            SET NEW.Salario = 10000;
+        ELSEIF NEW.ID_Tipo = 3 THEN  -- Engenheiro
+            SET NEW.Salario = 8000;
+        ELSE
+            -- Manter o salário atual se o cargo não é Cientista ou Engenheiro
+            SET NEW.Salario = OLD.Salario;
+        END IF;
     END IF;
-END //
+END; //
+
 
 --Gatilho para Não Permitir Gastos Acima do Orçamento
 --Impede que os gastos registrados em TABELA_DADOS_FINANCEIROS ultrapassem o orçamento da missão.
+
 CREATE TRIGGER VerificaGastos
-BEFORE INSERT ON TABELA_DADOS_FINANCEIROS
+BEFORE INSERT ON TBL_DADOS_FINANCEIROS
 FOR EACH ROW
 BEGIN
-    IF NEW.Gastos > NEW.Orçamento THEN
+    DECLARE orçamento DECIMAL(15, 2);
+
+    SELECT Orçamento INTO orçamento
+    FROM TBL_DADOS_FINANCEIROS
+    WHERE NomeMissao = NEW.NomeMissao;
+
+    IF NEW.Gastos > orçamento THEN
         SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Os gastos não podem ultrapassar o orçamento.';
+        SET MESSAGE_TEXT = 'Os gastos não podem exceder o orçamento da missão.';
     END IF;
-END //
+END; //
 
 --Gatilho para Atualizar Status de Sondas
 --Atualiza o status de uma sonda para 'Desativada' quando a missão correspondente é concluída.
-CREATE TRIGGER AtualizaStatusSonda
-AFTER UPDATE ON TBL_MISSOES_NÃO_TRIPULADAS
+
+CREATE TRIGGER AtualizaStatusSondas
+AFTER UPDATE ON TBL_MISSOES_NAO_TRIPULADAS
 FOR EACH ROW
 BEGIN
-    IF NEW.Duracao = 'Concluída' THEN
+    IF OLD.DataDeLancamento IS NOT NULL AND NEW.DataDeLancamento IS NULL THEN
         UPDATE TBL_SONDAS
         SET Status = 'Desativada'
-        WHERE ID_Sonda = NEW.ID_Sonda;
+        WHERE ID_Sonda = (SELECT ID_Sonda FROM TBL_MISSOES_NAO_TRIPULADAS WHERE NomeMissao = OLD.NomeMissao);
     END IF;
-END //
+END; //
+
 
 --Gatilho para Registrar a Data de Lançamento
 --Adiciona a data de lançamento da missão em TABELA_DADOS_CIENTÍFICOS quando uma nova missão é inserida em TBL_MISSOES_NÃO_TRIPULADAS.
-CREATE TRIGGER RegistraDataLancamento
-AFTER INSERT ON TBL_MISSOES_NÃO_TRIPULADAS
+
+CREATE TRIGGER AdicionaDataLancamento
+AFTER INSERT ON TBL_MISSOES_NAO_TRIPULADAS
 FOR EACH ROW
 BEGIN
-    INSERT INTO TABELA_DADOS_CIENTÍFICOS (NomeMissão, DataDeLançamento, Conteúdo)
-    VALUES (NEW.NomeMissão, NEW.DataDeLançamento, 'Dados científicos associados.');
-END //
+    INSERT INTO TBL_DADOS_CIENTIFICOS (NomeMissao, DataDeLancamento)
+    VALUES (NEW.NomeMissao, NEW.DataDeLancamento);
+END; //
+
 
 --Gatilho para Adicionar Astronautas a Missões
 --Adiciona automaticamente um astronauta à tabela de tripulação quando um novo astronauta é inserido na tabela TABELA_ASTRONAUTAS.
+
 CREATE TRIGGER AdicionaAstronauta
 AFTER INSERT ON TABELA_ASTRONAUTAS
 FOR EACH ROW
 BEGIN
-    INSERT INTO tbl_tripulação (NomeMissão, ID_Funcionario)
-    VALUES ('Missão padrão', NEW.ID_Funcionário);
-END //
+    INSERT INTO TBL_TRIPULACAO (NomeMissao, ID_Funcionario)
+    VALUES ('Missão Padrão', NEW.ID_Funcionario);
+END; //
 
 -- Para vcs testarem os gatilhos, podem fazer assim:
 
